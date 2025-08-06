@@ -1,0 +1,101 @@
+#include<bits/stdc++.h>
+
+using namespace std;
+
+int findSum(int arr[], int i, int j) {
+    if (i == j)
+        return arr[i];
+    return arr[j] + findSum(arr, i, j-1);
+}
+
+int findSumDC(int arr[], int i, int j) {
+    // Base case
+    if (i == j)
+        return arr[i];
+    // Divide
+    int mid = (i+j)/2;
+    // Conquer
+    int leftSum = findSumDC(arr, i, mid);
+    int rightSum = findSumDC(arr, mid+1, j);
+    // Combine
+    return leftSum + rightSum;
+}
+
+int countEven(int arr[], int start, int end) {
+    if (start == end) {
+        if (arr[start]%2 == 0)
+            return 1;
+        return 0;
+    }
+    int mid = (start+end)/2;
+    int leftCount = countEven(arr, start, mid);
+    int rightCount = countEven(arr, mid+1, end);
+    return leftCount + rightCount;
+}
+
+double findSqrt(double n, double low, double high) {
+    if (high - low < 0.0000001)
+        return high;
+    double mid = (low+high)/2.;
+    if (mid*mid < n)
+        return findSqrt(n, mid, high);
+    return findSqrt(n, low, mid);
+}
+
+int subarraySumBF(int arr[], int n) {
+    int maximumSubarraySum = INT_MIN;
+    for (int start = 0; start < n; start++) {
+        for (int end = start; end < n; end++) {
+            int subarraySum = 0;
+            for (int i = start; i <= end; i++)
+                subarraySum += arr[i];
+            maximumSubarraySum = max(maximumSubarraySum, subarraySum);
+        }
+    }
+    return maximumSubarraySum;
+}
+
+int crossingSum(int arr[], int start, int end) {
+    int mid = (start+end)/2;
+    int sum = 0, leftSum = INT_MIN, rightSum = INT_MIN;
+    for (int i = mid; i >= start; i--) {
+        sum += arr[i];
+        if (sum > leftSum)
+            leftSum = sum;
+    }
+    sum = 0;
+    for (int i = mid+1; i <= end; i++) {
+        sum += arr[i];
+        if (sum > rightSum)
+            rightSum = sum;
+    }
+    return leftSum + rightSum;
+}
+
+int subarraySumDC(int arr[], int start, int end) {
+    if (start == end)
+        return arr[start];
+    int mid = (start + end)/2;
+    int leftSubarraySum = subarraySumDC(arr, start, mid);
+    int rightSubarraySum = subarraySumDC(arr, mid+1, end);
+    int crossingSubarraySum = crossingSum(arr, start, end);
+    if (leftSubarraySum > rightSubarraySum and leftSubarraySum > crossingSubarraySum)
+        return leftSubarraySum;
+    if (rightSubarraySum > leftSubarraySum and rightSubarraySum > crossingSubarraySum)
+        return rightSubarraySum;
+    return crossingSubarraySum;
+}
+
+
+
+int main() {
+    int n;
+    cin >> n;
+    int arr[n];
+    for (int i = 0; i < n; i++)
+        cin >> arr[i];
+    cout << subarraySumDC(arr, 0, n-1) << endl;
+    // double n;
+    // cin >> n;
+    // cout << findSqrt(n, 1.0, n);
+}
