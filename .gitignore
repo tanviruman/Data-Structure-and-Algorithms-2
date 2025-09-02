@@ -12,3 +12,7 @@ PCT/Cube root.exe
 PCT/Cube root.o
 mid prep/Greedy/knapsack.exe
 mid prep/Greedy/knapsack.o
+mid prep/Greedy/fractional knapsack.exe
+mid prep/Greedy/fractional knapsack.o
+mid prep/Greedy/minCoinchange.exe
+mid prep/Greedy/minCoinchange.o
